@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Flashcard A4 Generator</title>
+
+<script src="https://cdn.jsdelivr.net/npm/pinyin-pro/dist/pinyin-pro.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    font-size: 16px;
+    padding: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 10px 5px 10px 0;
+    cursor: pointer;
+}
+
+@page {
+    size: A4;
+    margin: 10mm;
+}
+
+.print-area {
+    width: 210mm;
+    height: 297mm;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    border: 1px dashed #999;
+}
+
+.card {
+    border: 1px dashed black; /* Kesish chiziqlari */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    text-align: center;
+    padding: 10px;
+    flex-direction: column;
+}
+
+.pinyin {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #555;
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .print-container, .print-container * {
+        visibility: visible;
+    }
+    .print-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h2>Flashcard A4 (4x4) – Xitoycha → Pinyin</h2>
+
+<p>Har qatorda bitta Xitoycha so‘z yozing:</p>
+
+<textarea id="wordsInput" placeholder="你好&#10;学生&#10;老师"></textarea>
+<br>
+
+<button onclick="generateCards()">Yaratish</button>
+<button onclick="window.print()">Print</button>
+<button onclick="savePDF()">PDF Saqlash</button>
+
+<div class="print-container" id="printContainer"></div>
+
+<script>
+function generateCards() {
+    const input = document.getElementById("wordsInput").value;
+    const words = input.split("\n").filter(w => w.trim() !== "");
+    const container = document.getElementById("printContainer");
+    container.innerHTML = "";
+
+    // OLD TOMON (So'z)
+    const frontPage = document.createElement("div");
+    frontPage.className = "print-area";
+
+    for (let i = 0; i < 16; i++) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.textContent = words[i] ? words[i] : "";
+        frontPage.appendChild(card);
+    }
+
+    container.appendChild(frontPage);
+
+    // ORQA TOMON (Pinyin)
+    const backPage = document.createElement("div");
+    backPage.className = "print-area page-break";
+
+    for (let i = 0; i < 16; i++) {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        if (words[i]) {
+            const py = pinyinPro.pinyin(words[i], { toneType: 'mark' });
+            card.innerHTML = `<div>${py}</div>`;
+        }
+
+        backPage.appendChild(card);
+    }
+
+    container.appendChild(backPage);
+}
+
+function savePDF() {
+    const element = document.getElementById("printContainer");
+    const opt = {
+        margin: 0,
+        filename: 'flashcards.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+}
+</script>
+
+</body>
+</html>
