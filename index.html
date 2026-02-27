@@ -1,78 +1,40 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Flashcard Generator 5x5</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HSK Flashcard Pro</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
-  <h1 style="text-align:center;">Flashcard Generator (5x5)</h1>
+<header>
+  <h1>HSK Flashcard Pro</h1>
+</header>
 
-  <div class="controls">
-    <input type="file" id="csvFile" accept=".csv">
-    <button onclick="generateCards()">Generate</button>
-    <button onclick="window.print()">Print</button>
-  </div>
+<section class="controls">
+  <select id="hskLevel">
+    <option value="">All HSK</option>
+    <option value="6">HSK6</option>
+  </select>
 
-  <!-- FRONT PAGE -->
-  <div class="page" id="front"></div>
+  <input type="text" id="searchBox" placeholder="Search Hanzi / English">
 
-  <!-- BACK PAGE -->
-  <div class="page" id="back"></div>
+  <button onclick="generateFromDB()">Generate</button>
+  <button onclick="shuffleCards()">Shuffle</button>
+  <button onclick="downloadPDF()">Download PDF</button>
+  <button onclick="toggleDark()">Dark Mode</button>
+</section>
 
-  <script>
-    let words = [];
+<section class="manual">
+  <textarea id="manualInput" placeholder="手动输入汉字 (space bilan ajrating)"></textarea>
+  <button onclick="generateManual()">Generate Manual</button>
+</section>
 
-    document.getElementById("csvFile").addEventListener("change", function(e) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
+<div id="pages"></div>
 
-      reader.onload = function(event) {
-        const lines = event.target.result.trim().split("\n");
-        words = lines.map(line => line.split(","));
-      };
-
-      reader.readAsText(file);
-    });
-
-    function generateCards() {
-      const front = document.getElementById("front");
-      const back = document.getElementById("back");
-
-      front.innerHTML = "";
-      back.innerHTML = "";
-
-      let frontData = [];
-      let backData = [];
-
-      for (let i = 0; i < 25; i++) {
-        frontData.push(words[i]?.[0] || "");
-        backData.push(words[i]?.[1] || "");
-      }
-
-      // 🔄 Duplex reverse (har qatorda teskari)
-      let reversedBack = [];
-      for (let row = 0; row < 5; row++) {
-        let rowData = backData.slice(row * 5, row * 5 + 5);
-        reversedBack.push(...rowData.reverse());
-      }
-
-      frontData.forEach(text => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.textContent = text;
-        front.appendChild(card);
-      });
-
-      reversedBack.forEach(text => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.textContent = text;
-        back.appendChild(card);
-      });
-    }
-  </script>
-
+<script src="app.js"></script>
 </body>
 </html>
