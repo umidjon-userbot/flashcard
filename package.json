@@ -1,0 +1,7 @@
+{
+  "name": "flashcard-saas",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}

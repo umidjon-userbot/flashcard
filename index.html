@@ -1,39 +1,16 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>HSK Flashcard Pro</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Flashcard SaaS</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
-<header>
-  <h1>HSK Flashcard Pro</h1>
-</header>
-
-<section class="controls">
-  <select id="hskLevel">
-    <option value="">All HSK</option>
-    <option value="6">HSK6</option>
-  </select>
-
-  <input type="text" id="searchBox" placeholder="Search Hanzi / English">
-
-  <button onclick="generateFromDB()">Generate</button>
-  <button onclick="shuffleCards()">Shuffle</button>
-  <button onclick="downloadPDF()">Download PDF</button>
-  <button onclick="toggleDark()">Dark Mode</button>
-</section>
-
-<section class="manual">
-  <textarea id="manualInput" placeholder="手动输入汉字 (space bilan ajrating)"></textarea>
-  <button onclick="generateManual()">Generate Manual</button>
-</section>
-
-<div id="pages"></div>
+<h2>Flashcard SaaS</h2>
+<div id="status">Loading...</div>
+<a href="/admin.html">Admin Panel</a>
 
 <script src="app.js"></script>
 </body>
