@@ -19,19 +19,32 @@ function generateCards() {
   front.innerHTML = "";
   back.innerHTML = "";
 
+  let frontData = [];
+  let backData = [];
+
   for (let i = 0; i < 25; i++) {
-    const hanzi = words[i]?.[0] || "";
-    const pinyin = words[i]?.[1] || "";
-
-    const frontCard = document.createElement("div");
-    frontCard.className = "card";
-    frontCard.textContent = hanzi;
-
-    const backCard = document.createElement("div");
-    backCard.className = "card";
-    backCard.textContent = pinyin;
-
-    front.appendChild(frontCard);
-    back.appendChild(backCard);
+    frontData.push(words[i]?.[0] || "");
+    backData.push(words[i]?.[1] || "");
   }
+
+  // 🔄 Duplex reverse (har qatorni teskariga aylantiramiz)
+  let reversedBack = [];
+  for (let row = 0; row < 5; row++) {
+    let rowData = backData.slice(row * 5, row * 5 + 5);
+    reversedBack.push(...rowData.reverse());
+  }
+
+  frontData.forEach(text => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = text;
+    front.appendChild(card);
+  });
+
+  reversedBack.forEach(text => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = text;
+    back.appendChild(card);
+  });
 }
