@@ -1,37 +1,76 @@
+@page {
+  size: A4;
+  margin: 0;
+}
+
 body {
+  margin: 0;
+  background: #f5f5f5;
   font-family: Arial, sans-serif;
-  text-align: center;
+}
+
+h1 {
+  margin-top: 20px;
+}
+
+.controls {
+  margin: 20px;
 }
 
 .page {
   width: 210mm;
   height: 297mm;
   margin: 20px auto;
+  position: relative;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(5, 1fr);
-  gap: 2px;
-  page-break-after: always;
+  box-sizing: border-box;
+  background: white;
+  padding: 15mm;
 }
 
 .card {
-  border: 1px solid black;
+  border: 0.6mm solid black;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 22px;
+  text-align: center;
 }
 
+/* ✂️ Crop marks */
+.page::before,
+.page::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.page::before {
+  border: 0;
+  box-shadow:
+    -10mm -10mm 0 0 black,
+    calc(100% + 10mm) -10mm 0 0 black,
+    -10mm calc(100% + 10mm) 0 0 black,
+    calc(100% + 10mm) calc(100% + 10mm) 0 0 black;
+}
+
+/* PRINT MODE */
 @media print {
-  body * {
-    visibility: hidden;
+  body {
+    background: none;
   }
-  .page, .page * {
-    visibility: visible;
+
+  .controls, h1 {
+    display: none;
   }
+
   .page {
-    position: absolute;
-    left: 0;
-    top: 0;
+    margin: 0;
+    box-shadow: none;
+    page-break-after: always;
   }
 }
