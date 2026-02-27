@@ -67,9 +67,18 @@ function render(words) {
 }
 
 function shuffleCards() {
-  currentWords.sort(() => Math.random() - 0.5);
-  clearPages();
-  render(currentWords);
+
+  if (!current || current.length === 0) {
+    alert("Avval Generate qiling 🙂");
+    return;
+  }
+
+  for (let i = current.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [current[i], current[j]] = [current[j], current[i]];
+  }
+
+  render(current);
 }
 
 function downloadPDF() {
