@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <title>Flashcard Generator 5x5</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1>Flashcard Generator (5x5)</h1>
+
+  <input type="file" id="csvFile" accept=".csv" />
+  <button onclick="generateCards()">Generate</button>
+  <button onclick="window.print()">Print</button>
+
+  <div id="front" class="page"></div>
+  <div id="back" class="page"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
